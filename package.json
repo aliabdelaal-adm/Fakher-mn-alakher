@@ -1,0 +1,32 @@
+{
+  "name": "fakher-mn-alakher",
+  "version": "1.0.0",
+  "description": "A premium luxury shopping application and website - تطبيق وموقع تسوق فاخر",
+  "main": "website/index.html",
+  "scripts": {
+    "start": "cd website && python3 -m http.server 8000",
+    "serve": "cd website && python3 -m http.server 8000",
+    "dev": "cd website && python3 -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliabdelaal-adm/Fakher-mn-alakher.git"
+  },
+  "keywords": [
+    "luxury",
+    "shopping",
+    "ecommerce",
+    "ios",
+    "swift",
+    "arabic",
+    "fashion",
+    "jewelry",
+    "watches"
+  ],
+  "author": "Fakher mn Alakher Team",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/aliabdelaal-adm/Fakher-mn-alakher/issues"
+  },
+  "homepage": "https://github.com/aliabdelaal-adm/Fakher-mn-alakher#readme"
+}
