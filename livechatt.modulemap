@@ -1,0 +1,6 @@
+framework module livechatt {
+  umbrella header "livechatt-umbrella.h"
+
+  export *
+  module * { export * }
+}
