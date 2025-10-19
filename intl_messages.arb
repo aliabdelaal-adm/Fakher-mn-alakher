@@ -1,0 +1,605 @@
+{
+  "@@last_modified": "2021-08-09T15:43:43.791102",
+  "title": "Hello world App",
+  "@title": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivery_address": "Delivery address",
+  "@delivery_address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add_delivery_address": "Add delivery address",
+  "@add_delivery_address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add_new_delivery_address": "Add new delivery address",
+  "@add_new_delivery_address": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "select_delivery_time": "Select delivery time",
+  "@select_delivery_time": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivery_time": "Delivery time",
+  "@delivery_time": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "payment_mode": "Payment method",
+  "@payment_mode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "select_your_preferred_payment_mode": "Select your preferred payment method",
+  "@select_your_preferred_payment_mode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "package": "Package",
+  "@package": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "free": "Free",
+  "@free": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "discount": "Discount",
+  "@discount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "discount2": "Discount",
+  "@discount2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exclusive_offer": "Exclusive",
+  "@exclusive_offer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "competition": "Competition",
+  "@competition": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bucket": "Bucket",
+  "@bucket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add_coupon": "Add Coupon",
+  "@add_coupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "out_of_stock": "Out Of Stock",
+  "@out_of_stock": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bottle": "Bottle",
+  "@bottle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "send_to_bank_account": "Transfer the required amount by copying the bank account below",
+  "@send_to_bank_account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "barrel": "Barrel",
+  "@barrel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "on_back_order": "On Back Order",
+  "@on_back_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "total": "Total",
+  "@total": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "total_amount": "Total Amount",
+  "@total_amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Name",
+  "@name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Password",
+  "@password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sign_up": "Sign Up",
+  "@sign_up": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Login",
+  "@login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "have_account": "Already have account",
+  "@have_account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgot_password": "Forgot Your Password",
+  "@forgot_password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dont_have_an_account": "Dont have an account",
+  "@dont_have_an_account": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cash_on_delivery": "Cash on Delivery",
+  "@cash_on_delivery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bank_transfer": "Bank Transfer",
+  "@bank_transfer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tax": "Tax",
+  "@tax": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivery_fee": "Delivery Fee",
+  "@delivery_fee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "note": "Notes",
+  "@note": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "not_a_valid_full_name": "Not a valid full name",
+  "@not_a_valid_full_name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "not_a_valid_phone": "Not a valid phone",
+  "@not_a_valid_phone": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password_must_be_greater": "Password must be greater than 2 characters",
+  "@password_must_be_greater": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dont_have_any_item_in_your_cart": "You haven't taken any item yet",
+  "@dont_have_any_item_in_your_cart": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "submit_order": "Submit order",
+  "@submit_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wrong_phone_or_password": "Wrong phone or password",
+  "@wrong_phone_or_password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enter_phone_number_verification": "Enter phone number verification",
+  "@enter_phone_number_verification": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "verification": "Verification",
+  "@verification": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "verify": "Verify",
+  "@verify": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalid_verification_code": "Invalid verification code",
+  "@invalid_verification_code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "problem_while_verifying_code": "Problem occurred while verifying your number",
+  "@problem_while_verifying_code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "problem_occurred": "Problem occurred, please try again",
+  "@problem_occurred": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "your_order_has_been_successfully_submitted": "your order has been successfully submitted",
+  "@your_order_has_been_successfully_submitted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thanks_for_ordering": "Thank you for your order with Fresh",
+  "@thanks_for_ordering": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tracking_order": "Track your order",
+  "@tracking_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "order_received": "Order Recieved",
+  "@order_received": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "preparing": "Preparing",
+  "@preparing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ready": "Ready",
+  "@ready": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "on_the_way": "On the way",
+  "@on_the_way": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivered": "Delivered",
+  "@delivered": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "Update",
+  "@update": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "what_is_the_cost_of_delivery_fee": "what_is_the_cost_of_delivery_fee",
+  "@what_is_the_cost_of_delivery_fee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "what_is_the_min_amount": "what_is_the_min_amount",
+  "@what_is_the_min_amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "how_i_can_order": "how_i_can_order",
+  "@how_i_can_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "how_i_can_contact_you": "how_i_can_contact_you",
+  "@how_i_can_contact_you": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivery_fee_cost_is": "delivery_fee_cost_is",
+  "@delivery_fee_cost_is": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "min_amount_is": "min_amount_is",
+  "@min_amount_is": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "you_can_order_using": "you_can_order_using",
+  "@you_can_order_using": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "you_can_contact_using": "you_can_contact_using",
+  "@you_can_contact_using": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faq": "FAQ",
+  "@faq": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "my_orders": "My Orders",
+  "@my_orders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "order_number": "Order num",
+  "@order_number": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "currency": "currency",
+  "@currency": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "My Profile",
+  "@profile": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add_to_cart": "Add to cart",
+  "@add_to_cart": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "app_language": "App Language",
+  "@app_language": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "Language",
+  "@language": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delivery_addresses": "Delivery Addresses",
+  "@delivery_addresses": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "this_phone_exists": "Phone already used",
+  "@this_phone_exists": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "kilo": "Kilo",
+  "@kilo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "piece": "Piece",
+  "@piece": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "piece2": "Piece",
+  "@piece2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "packet": "Packet",
+  "@packet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gram": "Gram",
+  "@gram": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "box": "Box",
+  "@box": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bag": "Bag",
+  "@bag": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dish": "Dish",
+  "@dish": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pack": "Pack",
+  "@pack": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dont_have_any_order": "You don't have any order",
+  "@dont_have_any_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Logout",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "order_is_less_than": "order_is_less_than",
+  "@order_is_less_than": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expired_coupon": "expired_coupon",
+  "@expired_coupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "verified_coupon": "verified_coupon",
+  "@verified_coupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalid_coupon": "invalid_coupon",
+  "@invalid_coupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "order_amount_should_more_than": "order_amount_should_more_than",
+  "@order_amount_should_more_than": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "discount_deleted_becasue_amount_is_less_than": "discount_deleted_becasue_amount_is_less_than",
+  "@discount_deleted_becasue_amount_is_less_than": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "help_supports": "help_supports",
+  "@help_supports": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "home": "home",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tapAgainToLeave": "tapAgainToLeave",
+  "@tapAgainToLeave": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "did_not_receive_the_code": "did_not_receive_the_code",
+  "@did_not_receive_the_code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "resend": "resend",
+  "@resend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "credit_card": "credit_card",
+  "@credit_card": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wallet_balance": "wallet_balance",
+  "@wallet_balance": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wallet": "wallet",
+  "@wallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "no_enough_credit_on_wallet": "no_enough_credit_on_wallet",
+  "@no_enough_credit_on_wallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "shopping_cart": "shopping_cart",
+  "@shopping_cart": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "congrats_cash_back": "congrats_cash_back",
+  "@congrats_cash_back": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "in_your_wallet": "in_your_wallet",
+  "@in_your_wallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "no_result_found": "404 - No Results Found",
+  "@no_result_found": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "Search",
+  "@search": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rate": "Rate",
+  "@rate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rate_now": "Rate Now",
+  "@rate_now": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thanks_for_reviewing": "Thanks for reviewing ",
+  "@thanks_for_reviewing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "product_rating": "product_rating",
+  "@product_rating": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "free_delivery": "free_delivery",
+  "@free_delivery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "save_m": "save_m",
+  "@save_m": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "order_now": "order_now",
+  "@order_now": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "limited_quantity": "limited_quantity",
+  "@limited_quantity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "less_price": "less_price",
+  "@less_price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sold_out": "sold_out",
+  "@sold_out": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "new_product": "new_product",
+  "@new_product": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hurry_up_to_order": "hurry_up_to_order",
+  "@hurry_up_to_order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "to_participate": "to_participate",
+  "@to_participate": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
