@@ -1,60 +1,71 @@
-[![Apache
-License](https://img.shields.io/github/license/google/promises.svg)](LICENSE)
-[![Travis](https://api.travis-ci.org/google/promises.svg?branch=master)](https://travis-ci.org/google/promises)
-[![Gitter Chat](https://badges.gitter.im/google/promises.svg)](https://gitter.im/google/promises)
+Nanopb - Protocol Buffers for Embedded Systems
+==============================================
 
-![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-blue.svg?longCache=true&style=flat)
-![Languages](https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg?longCache=true&style=flat)
-![Package Managers](https://img.shields.io/badge/supports-Bazel%20%7C%20SwiftPM%20%7C%20CocoaPods%20%7C%20Carthage-yellow.svg?longCache=true&style=flat)
+[![Build Status](https://travis-ci.org/nanopb/nanopb.svg?branch=master)](https://travis-ci.org/nanopb/nanopb)
 
-# Promises
+Nanopb is a small code-size Protocol Buffers implementation in ansi C. It is
+especially suitable for use in microcontrollers, but fits any memory
+restricted system.
 
-Promises is a modern framework that provides a synchronization construct for
-Objective-C and Swift to facilitate writing asynchronous code.
+* **Homepage:** https://jpa.kapsi.fi/nanopb/
+* **Documentation:** https://jpa.kapsi.fi/nanopb/docs/
+* **Downloads:** https://jpa.kapsi.fi/nanopb/download/
+* **Forum:** https://groups.google.com/forum/#!forum/nanopb
 
-*   [Introduction](g3doc/index.md)
-    *   [The problem with async
-        code](g3doc/index.md#the-problem-with-async-code)
-    *   [Promises to the rescue](g3doc/index.md#promises-to-the-rescue)
-    *   [What is a promise?](g3doc/index.md#what-is-a-promise)
-*   [Framework](g3doc/index.md#framework)
-    *   [Features](g3doc/index.md#features)
-    *   [Benchmark](g3doc/index.md#benchmark)
-*   [Getting started](g3doc/index.md#getting-started)
-    *   [Add dependency](g3doc/index.md#add-dependency)
-    *   [Import](g3doc/index.md#import)
-    *   [Adopt](g3doc/index.md#adopt)
-*   [Basics](g3doc/index.md#basics)
-    *   [Creating promises](g3doc/index.md#creating-promises)
-        *   [Async](g3doc/index.md#async)
-        *   [Do](g3doc/index.md#do)
-        *   [Pending](g3doc/index.md#pending)
-        *   [Resolved](g3doc/index.md#create-a-resolved-promise)
-    *   [Observing fulfillment](g3doc/index.md#observing-fulfillment)
-        *   [Then](g3doc/index.md#then)
-    *   [Observing rejection](g3doc/index.md#observing-rejection)
-        *   [Catch](g3doc/index.md#catch)
-*   [Extensions](g3doc/index.md#extensions)
-    *   [All](g3doc/index.md#all)
-    *   [Always](g3doc/index.md#always)
-    *   [Any](g3doc/index.md#any)
-    *   [Await](g3doc/index.md#await)
-    *   [Delay](g3doc/index.md#delay)
-    *   [Race](g3doc/index.md#race)
-    *   [Recover](g3doc/index.md#recover)
-    *   [Reduce](g3doc/index.md#reduce)
-    *   [Retry](g3doc/index.md#retry)
-    *   [Timeout](g3doc/index.md#timeout)
-    *   [Validate](g3doc/index.md#validate)
-    *   [Wrap](g3doc/index.md#wrap)
-*   [Advanced topics](g3doc/index.md#advanced-topics)
-    *   [Default dispatch queue](g3doc/index.md#default-dispatch-queue)
-    *   [Ownership and retain
-        cycles](g3doc/index.md#ownership-and-retain-cycles)
-    *   [Testing](g3doc/index.md#testing)
-    *   [Objective-C <-> Swift
-        interoperability](g3doc/index.md#objective-c---swift-interoperability)
-    *   [Dot-syntax in Objective-C](g3doc/index.md#dot-syntax-in-objective-c)
-*   [Anti-patterns](g3doc/index.md#anti-patterns)
-    *   [Broken chain](g3doc/index.md#broken-chain)
-    *   [Nested promises](g3doc/index.md#nested-promises)
+
+
+Using the nanopb library
+------------------------
+To use the nanopb library, you need to do two things:
+
+1. Compile your .proto files for nanopb, using `protoc`.
+2. Include *pb_encode.c*, *pb_decode.c* and *pb_common.c* in your project.
+
+The easiest way to get started is to study the project in "examples/simple".
+It contains a Makefile, which should work directly under most Linux systems.
+However, for any other kind of build system, see the manual steps in
+README.txt in that folder.
+
+
+
+Using the Protocol Buffers compiler (protoc)
+--------------------------------------------
+The nanopb generator is implemented as a plugin for the Google's own `protoc`
+compiler. This has the advantage that there is no need to reimplement the
+basic parsing of .proto files. However, it does mean that you need the
+Google's protobuf library in order to run the generator.
+
+If you have downloaded a binary package for nanopb (either Windows, Linux or
+Mac OS X version), the `protoc` binary is included in the 'generator-bin'
+folder. In this case, you are ready to go. Simply run this command:
+
+    generator-bin/protoc --nanopb_out=. myprotocol.proto
+
+However, if you are using a git checkout or a plain source distribution, you
+need to provide your own version of `protoc` and the Google's protobuf library.
+On Linux, the necessary packages are `protobuf-compiler` and `python-protobuf`.
+On Windows, you can either build Google's protobuf library from source or use
+one of the binary distributions of it. In either case, if you use a separate
+`protoc`, you need to manually give the path to nanopb generator:
+
+    protoc --plugin=protoc-gen-nanopb=nanopb/generator/protoc-gen-nanopb ...
+
+
+
+Running the tests
+-----------------
+If you want to perform further development of the nanopb core, or to verify
+its functionality using your compiler and platform, you'll want to run the
+test suite. The build rules for the test suite are implemented using Scons,
+so you need to have that installed (ex: `sudo apt install scons` on Ubuntu). To run the tests:
+
+    cd tests
+    scons
+
+This will show the progress of various test cases. If the output does not
+end in an error, the test cases were successful.
+
+Note: Mac OS X by default aliases 'clang' as 'gcc', while not actually
+supporting the same command line options as gcc does. To run tests on
+Mac OS X, use: "scons CC=clang CXX=clang". Same way can be used to run
+tests with different compilers on any platform.
