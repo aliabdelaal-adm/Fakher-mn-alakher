@@ -1,85 +1,60 @@
-Protocol Buffers - Google's data interchange format
-===================================================
+[![Apache
+License](https://img.shields.io/github/license/google/promises.svg)](LICENSE)
+[![Travis](https://api.travis-ci.org/google/promises.svg?branch=master)](https://travis-ci.org/google/promises)
+[![Gitter Chat](https://badges.gitter.im/google/promises.svg)](https://gitter.im/google/promises)
 
-Copyright 2008 Google Inc.
+![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-blue.svg?longCache=true&style=flat)
+![Languages](https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg?longCache=true&style=flat)
+![Package Managers](https://img.shields.io/badge/supports-Bazel%20%7C%20SwiftPM%20%7C%20CocoaPods%20%7C%20Carthage-yellow.svg?longCache=true&style=flat)
 
-https://developers.google.com/protocol-buffers/
+# Promises
 
-Overview
---------
+Promises is a modern framework that provides a synchronization construct for
+Objective-C and Swift to facilitate writing asynchronous code.
 
-Protocol Buffers (a.k.a., protobuf) are Google's language-neutral,
-platform-neutral, extensible mechanism for serializing structured data. You
-can find [protobuf's documentation on the Google Developers site](https://developers.google.com/protocol-buffers/).
-
-This README file contains protobuf installation instructions. To install
-protobuf, you need to install the protocol compiler (used to compile .proto
-files) and the protobuf runtime for your chosen programming language.
-
-Protocol Compiler Installation
-------------------------------
-
-The protocol compiler is written in C++. If you are using C++, please follow
-the [C++ Installation Instructions](src/README.md) to install protoc along
-with the C++ runtime.
-
-For non-C++ users, the simplest way to install the protocol compiler is to
-download a pre-built binary from our release page:
-
-  [https://github.com/protocolbuffers/protobuf/releases](https://github.com/protocolbuffers/protobuf/releases)
-
-In the downloads section of each release, you can find pre-built binaries in
-zip packages: protoc-$VERSION-$PLATFORM.zip. It contains the protoc binary
-as well as a set of standard .proto files distributed along with protobuf.
-
-If you are looking for an old version that is not available in the release
-page, check out the maven repo here:
-
-  [https://repo1.maven.org/maven2/com/google/protobuf/protoc/](https://repo1.maven.org/maven2/com/google/protobuf/protoc/)
-
-These pre-built binaries are only provided for released versions. If you want
-to use the github master version at HEAD, or you need to modify protobuf code,
-or you are using C++, it's recommended to build your own protoc binary from
-source.
-
-If you would like to build protoc binary from source, see the [C++ Installation
-Instructions](src/README.md).
-
-Protobuf Runtime Installation
------------------------------
-
-Protobuf supports several different programming languages. For each programming
-language, you can find instructions in the corresponding source directory about
-how to install protobuf runtime for that specific language:
-
-| Language                             | Source                                                      |
-|--------------------------------------|-------------------------------------------------------------|
-| C++ (include C++ runtime and protoc) | [src](src)                                                  |
-| Java                                 | [java](java)                                                |
-| Python                               | [python](python)                                            |
-| Objective-C                          | [objectivec](objectivec)                                    |
-| C#                                   | [csharp](csharp)                                            |
-| JavaScript                           | [js](js)                                                    |
-| Ruby                                 | [ruby](ruby)                                                |
-| Go                                   | [protocolbuffers/protobuf-go](https://github.com/protocolbuffers/protobuf-go)|
-| PHP                                  | [php](php)                                                  |
-| Dart                                 | [dart-lang/protobuf](https://github.com/dart-lang/protobuf) |
-
-Quick Start
------------
-
-The best way to learn how to use protobuf is to follow the tutorials in our
-developer guide:
-
-https://developers.google.com/protocol-buffers/docs/tutorials
-
-If you want to learn from code examples, take a look at the examples in the
-[examples](examples) directory.
-
-Documentation
--------------
-
-The complete documentation for Protocol Buffers is available via the
-web at:
-
-https://developers.google.com/protocol-buffers/
+*   [Introduction](g3doc/index.md)
+    *   [The problem with async
+        code](g3doc/index.md#the-problem-with-async-code)
+    *   [Promises to the rescue](g3doc/index.md#promises-to-the-rescue)
+    *   [What is a promise?](g3doc/index.md#what-is-a-promise)
+*   [Framework](g3doc/index.md#framework)
+    *   [Features](g3doc/index.md#features)
+    *   [Benchmark](g3doc/index.md#benchmark)
+*   [Getting started](g3doc/index.md#getting-started)
+    *   [Add dependency](g3doc/index.md#add-dependency)
+    *   [Import](g3doc/index.md#import)
+    *   [Adopt](g3doc/index.md#adopt)
+*   [Basics](g3doc/index.md#basics)
+    *   [Creating promises](g3doc/index.md#creating-promises)
+        *   [Async](g3doc/index.md#async)
+        *   [Do](g3doc/index.md#do)
+        *   [Pending](g3doc/index.md#pending)
+        *   [Resolved](g3doc/index.md#create-a-resolved-promise)
+    *   [Observing fulfillment](g3doc/index.md#observing-fulfillment)
+        *   [Then](g3doc/index.md#then)
+    *   [Observing rejection](g3doc/index.md#observing-rejection)
+        *   [Catch](g3doc/index.md#catch)
+*   [Extensions](g3doc/index.md#extensions)
+    *   [All](g3doc/index.md#all)
+    *   [Always](g3doc/index.md#always)
+    *   [Any](g3doc/index.md#any)
+    *   [Await](g3doc/index.md#await)
+    *   [Delay](g3doc/index.md#delay)
+    *   [Race](g3doc/index.md#race)
+    *   [Recover](g3doc/index.md#recover)
+    *   [Reduce](g3doc/index.md#reduce)
+    *   [Retry](g3doc/index.md#retry)
+    *   [Timeout](g3doc/index.md#timeout)
+    *   [Validate](g3doc/index.md#validate)
+    *   [Wrap](g3doc/index.md#wrap)
+*   [Advanced topics](g3doc/index.md#advanced-topics)
+    *   [Default dispatch queue](g3doc/index.md#default-dispatch-queue)
+    *   [Ownership and retain
+        cycles](g3doc/index.md#ownership-and-retain-cycles)
+    *   [Testing](g3doc/index.md#testing)
+    *   [Objective-C <-> Swift
+        interoperability](g3doc/index.md#objective-c---swift-interoperability)
+    *   [Dot-syntax in Objective-C](g3doc/index.md#dot-syntax-in-objective-c)
+*   [Anti-patterns](g3doc/index.md#anti-patterns)
+    *   [Broken chain](g3doc/index.md#broken-chain)
+    *   [Nested promises](g3doc/index.md#nested-promises)
