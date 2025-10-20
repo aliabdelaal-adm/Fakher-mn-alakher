@@ -1,130 +1,262 @@
-Toast for iOS
-=============
+# SDWebImageWebPCoder
 
-[![Build Status](https://travis-ci.org/scalessec/Toast.svg?branch=3.0)](https://travis-ci.org/scalessec/Toast)
-[![CocoaPods Version](https://img.shields.io/cocoapods/v/Toast.svg)](http://cocoadocs.org/docsets/Toast)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![CI Status](http://img.shields.io/travis/SDWebImage/SDWebImageWebPCoder.svg?style=flat)](https://travis-ci.org/SDWebImage/SDWebImageWebPCoder)
+[![Version](https://img.shields.io/cocoapods/v/SDWebImageWebPCoder.svg?style=flat)](http://cocoapods.org/pods/SDWebImageWebPCoder)
+[![License](https://img.shields.io/cocoapods/l/SDWebImageWebPCoder.svg?style=flat)](http://cocoapods.org/pods/SDWebImageWebPCoder)
+[![Platform](https://img.shields.io/cocoapods/p/SDWebImageWebPCoder.svg?style=flat)](http://cocoapods.org/pods/SDWebImageWebPCoder)
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager/)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/SDWebImage/SDWebImageWebPCoder)
+[![codecov](https://codecov.io/gh/SDWebImage/SDWebImageWebPCoder/branch/master/graph/badge.svg)](https://codecov.io/gh/SDWebImage/SDWebImageWebPCoder)
 
-Toast is an Objective-C category that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most
- toast notifications can be triggered with a single line of code.
+Starting with the SDWebImage 5.0 version, we moved the WebP support code and [libwebp](https://github.com/webmproject/libwebp) from the Core Repo to this stand-alone repo.
 
-**Using Swift? A native swift port of this library is now available: [Toast-Swift](https://github.com/scalessec/Toast-Swift "Toast-Swift")**
+SDWebImageWebPCoder supports both WebP decoding and encoding, for Static WebP or Animated WebP as well.
 
-Screenshots
----------
-![Toast Screenshots](toast_screenshots.jpg)
+## Requirements
 
++ iOS 9.0
++ macOS 10.11
++ tvOS 9.0
++ watchOS 2.0
++ Xcode 11.0
 
-Basic Examples
----------
-```objc
-// basic usage
-[self.view makeToast:@"This is a piece of toast."];
+## Installation
 
-// toast with a specific duration and position
-[self.view makeToast:@"This is a piece of toast with a specific duration and position." 
-            duration:3.0
-            position:CSToastPositionTop];
+#### CocoaPods
 
-// toast with all possible options
-[self.view makeToast:@"This is a piece of toast with a title & image"
-            duration:3.0
-            position:[NSValue valueWithCGPoint:CGPointMake(110, 110)]
-               title:@"Toast Title"
-               image:[UIImage imageNamed:@"toast.png"]
-               style:nil
-          completion:^(BOOL didTap) {
-              if (didTap) {
-                  NSLog(@"completion from tap");
-              } else {
-                  NSLog(@"completion without tap");
-              }
-          }];
-                
-// display toast with an activity spinner
-[self.view makeToastActivity:CSToastPositionCenter];
+SDWebImageWebPCoder is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
-// display any view as toast
-[self.view showToast:myView];
-```
-
-But wait, there's more!
----------
-```objc
-// create a new style
-CSToastStyle *style = [[CSToastStyle alloc] initWithDefaultStyle];
-
-// this is just one of many style options
-style.messageColor = [UIColor orangeColor];
-
-// present the toast with the new style
-[self.view makeToast:@"This is a piece of toast."
-            duration:3.0
-            position:CSToastPositionBottom
-               style:style];
-
-// or perhaps you want to use this style for all toasts going forward?
-// just set the shared style and there's no need to provide the style again
-[CSToastManager setSharedStyle:style];
-
-// toggle "tap to dismiss" functionality
-[CSToastManager setTapToDismissEnabled:YES];
-
-// toggle queueing behavior
-[CSToastManager setQueueEnabled:YES];
-
-// immediately hides all toast views in self.view
-[self.view hideAllToasts];
-```
-    
-See the demo project for more examples.
-
-Setup Instructions
-------------------
-
-[CocoaPods](http://cocoapods.org)
-------------------
-
-Install with CocoaPods by adding the following to your `Podfile`:
 ```ruby
-pod 'Toast', '~> 4.0.0'
+pod 'SDWebImageWebPCoder'
 ```
 
-[Carthage](https://github.com/Carthage/Carthage)
-------------------
+#### Carthage
 
-Install with Carthage by adding the following to your `Cartfile`:
-```ogdl
-github "scalessec/Toast" ~> 4.0.0
+SDWebImageWebPCoder is available through [Carthage](https://github.com/Carthage/Carthage).
+
 ```
-Run `carthage update` to build the framework and link against `Toast.framework`. Then, `#import <Toast/Toast.h>`.
+github "SDWebImage/SDWebImageWebPCoder"
+```
 
-Manually
---------
+#### Swift Package Manager (Xcode 11+)
 
-1. Add `UIView+Toast.h` & `UIView+Toast.m` to your project.
-2. `#import "UIView+Toast.h"`
-3. Grab yourself a cold 🍺.
+SDWebImageWebPCoder is available through [Swift Package Manager](https://swift.org/package-manager).
 
-MIT License
------------
-    Copyright (c) 2011-2017 Charles Scalesse.
+```swift
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/SDWebImage/SDWebImageWebPCoder.git", from: "0.3.0")
+    ]
+)
+```
 
-    Permission is hereby granted, free of charge, to any person obtaining a
-    copy of this software and associated documentation files (the
-    "Software"), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to
-    the following conditions:
+## Usage
 
-    The above copyright notice and this permission notice shall be included
-    in all copies or substantial portions of the Software.
+### Add Coder
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Before using SDWebImage to load WebP images, you need to register the WebP Coder to your coders manager. This step is recommended to be done after your App launch (like AppDelegate method).
+
++ Objective-C
+
+```objective-c
+// Add coder
+SDImageWebPCoder *webPCoder = [SDImageWebPCoder sharedCoder];
+[[SDImageCodersManager sharedManager] addCoder:webPCoder];
+```
+
++ Swift
+
+```swift
+// Add coder
+let WebPCoder = SDImageWebPCoder.shared
+SDImageCodersManager.shared.addCoder(WebPCoder)
+```
+
+### Modify HTTP Accept Header
+
+Some of image server provider may try to detect the client supported format, by default, SDWebImage use `image/*,*/*;q=0.8` for [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept). You can modify it with the `image/webp` as well.
+
++ Objective-C
+
+```objective-c
+[[SDWebImageDownloader sharedDownloader] setValue:@"image/webp,image/*,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+```
+
++ Swift
+
+```swift
+SDWebImageDownloader.shared.setValue("image/webp,image/*,*/*;q=0.8", forHTTPHeaderField:"Accept")
+```
+
+### Loading
+
++ Objective-C
+
+```objective-c
+// WebP online image loading
+NSURL *webpURL;
+UIImageView *imageView;
+[imageView sd_setImageWithURL:webpURL];
+```
+
++ Swift
+
+```swift
+// WebP online image loading
+let webpURL: URL
+let imageView: UIImageView
+imageView.sd_setImage(with: webpURL)
+```
+
+### Progressive Animation Loading (0.5.0+)
+
++ Objective-C
+
+```objective-c
+// WebP progressive loading for animated image
+NSURL *webpURL;
+SDAnimatedImageView *imageView;
+imageView.shouldIncrementalLoad = YES;
+[imageView sd_setImageWithURL:webpURL placeholderImage:nil options:SDWebImageProgressiveLoad];
+```
+
++ Swift
+
+```swift
+// WebP progressive loading for animated image
+let webpURL: URL
+let imageView: SDAnimatedImageView
+imageView.shouldIncrementalLoad = true
+imageView.sd_setImage(with: webpURL, placeholderImage: nil, options: [.progressiveLoad])
+```
+
+### Decoding
+
++ Objective-C
+
+```objective-c
+// WebP image decoding
+NSData *webpData;
+UIImage *image = [[SDImageWebPCoder sharedCoder] decodedImageWithData:webpData options:nil];
+```
+
++ Swift
+
+```swift
+// WebP image decoding
+let webpData: Data
+let image = SDImageWebPCoder.shared.decodedImage(with: data, options: nil)
+```
+
+### Thumbnail Decoding (0.4.0+)
+
++ Objective-C
+
+```objective-c
+// WebP thumbnail image decoding
+NSData *webpData;
+CGSize thumbnailSize = CGSizeMake(300, 300);
+UIImage *thumbnailImage = [[SDImageWebPCoder sharedCoder] decodedImageWithData:webpData options:@{SDImageCoderDecodeThumbnailPixelSize : @(thumbnailSize}];
+```
+
++ Swift
+
+```swift
+// WebP thumbnail image decoding
+let webpData: Data
+let thumbnailSize = CGSize(width: 300, height: 300)
+let image = SDImageWebPCoder.shared.decodedImage(with: data, options: [.decodeThumbnailPixelSize: thumbnailSize])
+```
+
+### Encoding
+
++ Objective-c
+
+```objective-c
+// WebP image encoding
+UIImage *image;
+NSData *webpData = [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:nil];
+// Encode Quality
+NSData *lossyWebpData = [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeCompressionQuality : @(0.1)}]; // [0, 1] compression quality
+NSData *limitedWebpData = [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeMaxFileSize : @(1024 * 10)}]; // v0.6.0 feature, limit output file size <= 10KB
+```
+
++ Swift
+
+```swift
+// WebP image encoding
+let image: UIImage
+let webpData = SDImageWebPCoder.shared.encodedData(with: image, format: .webP, options: nil)
+// Encode Quality
+let lossyWebpData = SDImageWebPCoder.shared.encodedData(with: image, format: .webP, options: [.encodeCompressionQuality: 0.1]) // [0, 1] compression quality
+let limitedWebpData = SDImageWebPCoder.shared.encodedData(with: image, format: .webP, options: [.encodeMaxFileSize: 1024 * 10]) // v0.6.0 feature, limit output file size <= 10KB
+```
+
+### Thumbnail Encoding (0.6.1+)
+
++ Objective-C
+
+```objective-c
+// WebP image thumbnail encoding
+UIImage *image;
+NSData *thumbnailWebpData = [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeMaxPixelSize : @(CGSizeMake(200, 200)}]; // v0.6.1 feature, encoding max pixel size
+```
+
++ Swift
+
+```swift
+// WebP image thumbnail encoding
+let image: UIImage
+let thumbnailWebpData = SDImageWebPCoder.shared.encodedData(with: image, format: .webP, options: [.encodeMaxPixelSize: CGSize(width: 200, height: 200)]) // v0.6.1 feature, encoding max pixel size
+```
+
+See more documentation in [SDWebImage Wiki - Coders](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#custom-coder-420)
+
+### Advanced WebP codec options (0.8+)
+
+The WebP codec [libwebp](https://developers.google.com/speed/webp/docs/api) we use, supports some advanced control options for encoding/decoding. You can pass them to libwebp by using the wrapper top level API:
+
++ Objective-C
+
+```objective-c
+UIImage *image;
+SDImageCoderOptions *options = @{SDImageCoderEncodeWebPMethod: @(0), SDImageCoderEncodeWebPAlphaCompression: @(100)};
+NSData *data = [SDImageWebPCoder.sharedCoder encodedDataWithImage:image format:SDImageFormatWebP options:options];
+// Will translate into:
+// config->method = 0;
+// config->alpha_quality = 100;
+```
+
++ Swift
+
+```swift
+let image: UIImage
+let options = [.encodeWebPMethod: 0, .encodeWebPAlphaCompression: 100]
+let data = SDImageWebPCoder.shared.encodedData(with: image, format: .webP, options: options)
+// Will translate into:
+// config->method = 0;
+// config->alpha_quality = 100;
+```
+
+## Example
+
+To run the example project, clone the repo, and run `pod install` from the root directory first. Then open `SDWebImageWebPCoder.xcworkspace`.
+
+This is a demo to show how to use `WebP` and animated `WebP` images via `SDWebImageWebPCoderExample` target.
+
+## Screenshot
+
+<img src="https://raw.githubusercontent.com/SDWebImage/SDWebImageWebPCoder/master/Example/Screenshot/WebPDemo.png" width="300" />
+
+These WebP images are from [WebP Gallery](https://developers.google.com/speed/webp/gallery1) and [GIF vs APNG vs WebP](http://littlesvr.ca/apng/gif_apng_webp.html)
+
+## Author
+
+[Bogdan Poplauschi](https://github.com/bpoplauschi)
+[DreamPiggy](https://github.com/dreampiggy)
+
+## License
+
+SDWebImageWebPCoder is available under the MIT license. See [the LICENSE file](https://github.com/SDWebImage/SDWebImageWebPCoder/blob/master/LICENSE) for more info.
+
+
