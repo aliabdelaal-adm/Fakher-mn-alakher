@@ -1,538 +1,231 @@
-# Mantle
+# iOS chat widget for LiveChat
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Mantle.svg)](https://img.shields.io/cocoapods/v/Mantle.svg)
-[![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager)
-[![Platform](https://img.shields.io/cocoapods/p/Mantle.svg?style=flat)](http://cocoadocs.org/docsets/Mantle)
+iOS chat widget for LiveChat allows you to integrate [LiveChat](https://livechatinc.com) with your iOS app.
 
-Mantle makes it easy to write a simple model layer for your Cocoa or Cocoa Touch application.
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](#carthage)
+[![Version](https://img.shields.io/cocoapods/v/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
+[![License](https://img.shields.io/cocoapods/l/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
+[![Platform](https://img.shields.io/cocoapods/p/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
 
-## The Typical Model Object
+## Requirements
 
-What's wrong with the way model objects are usually written in Objective-C?
+- iOS 11.0+
+- Xcode 10.0+
 
-Let's use the [GitHub API](http://developer.github.com) for demonstration. How
-would one typically represent a [GitHub
-issue](http://developer.github.com/v3/issues/#get-a-single-issue) in
-Objective-C?
+## Installation
 
-```objc
-typedef enum : NSUInteger {
-    GHIssueStateOpen,
-    GHIssueStateClosed
-} GHIssueState;
+### Carthage
 
-@interface GHIssue : NSObject <NSCoding, NSCopying>
+If you use [Carthage](https://github.com/Carthage/Carthage) to manage your dependencies, simply add 'livechat/chat-window-ios' to your `Cartfile`.
 
-@property (nonatomic, copy, readonly) NSURL *URL;
-@property (nonatomic, copy, readonly) NSURL *HTMLURL;
-@property (nonatomic, copy, readonly) NSNumber *number;
-@property (nonatomic, assign, readonly) GHIssueState state;
-@property (nonatomic, copy, readonly) NSString *reporterLogin;
-@property (nonatomic, copy, readonly) NSDate *updatedAt;
-@property (nonatomic, strong, readonly) GHUser *assignee;
-@property (nonatomic, copy, readonly) NSDate *retrievedAt;
-
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *body;
-
-- (id)initWithDictionary:(NSDictionary *)dictionary;
-
-@end
+```
+github "livechat/chat-window-ios" ~> 2.0.24
 ```
 
-```objc
-@implementation GHIssue
+Make sure you have added `LiveChat.framework` to the "_Linked Frameworks and Libraries_" section of your target, and have include it in your Carthage framework copying build phase.
 
-+ (NSDateFormatter *)dateFormatter {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-    return dateFormatter;
-}
+### CocoaPods
 
-- (id)initWithDictionary:(NSDictionary *)dictionary {
-    self = [self init];
-    if (self == nil) return nil;
+If you use [CocoaPods](http://cocoapods.org) to manage your dependencies, simply add LiveChat to your `Podfile`.
 
-    _URL = [NSURL URLWithString:dictionary[@"url"]];
-    _HTMLURL = [NSURL URLWithString:dictionary[@"html_url"]];
-    _number = dictionary[@"number"];
+```bash
+pod 'LiveChat', '~> 2.0.24'
+```
 
-    if ([dictionary[@"state"] isEqualToString:@"open"]) {
-        _state = GHIssueStateOpen;
-    } else if ([dictionary[@"state"] isEqualToString:@"closed"]) {
-        _state = GHIssueStateClosed;
+### Manual Installation
+
+You can integrate iOS chat widget into your project manually without using a dependency manager.
+
+#### Swift
+
+Just drag all files from the `LiveChat/Sources` directory into your project.
+
+#### Objective-C
+
+Drag all files from the `LiveChat/Sources` directory into your project. When adding first `*.swift` file to Objective-C project, Xcode will ask you to create a Bridging Header. It is not necessary for chat widget to work, so you can decline unless you plan to call Swift code from Objective-C. More information about bridging headers and Swift and Objective-C interoperability can be found [here](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html). You need to put the following import statement: `#import "<Your Project Name>-Swift.h"` at the top of your .m file.
+
+Also, for Objective-C projects, you need to set the **Embedded Content Contains Swift Code** flag in your project to `Yes` (found under **Build Options** in the **Build Settings** tab).
+
+## Usage
+
+### Initalization
+
+```swift
+import LiveChat
+
+LiveChat.licenseId = "YOUR_LICENSE_ID"
+```
+
+### Default Chat Widget presentation
+
+```swift
+LiveChat.presentChat()
+```
+
+### Presenting Chat Widget within client app view hierarchy
+
+You can also take over the a responsibility for widget presentation within you app. To do so you have to set the `customPresentationStyleEnabled` flag to `true`.
+This flag will disable the default widget's presentation behavior and leave that logic up to you. You can now access the `chatViewController` property and define your own presentation style.
+
+When `customPresentationStyleEnabled` is set to `false` then `chatViewController` has a value of `nil`.
+
+```swift
+class YOUR_CLASS_NAME : UIViewControler, LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
+
+    @IBAction func openChat(_ sender: Any) {  
+        LiveChat.delegate = self
+        LiveChat.customPresentationStyleEnabled = true
+
+        present(LiveChat.chatViewController!, animated: true) {
+            print("Presentation completed")
+        }
     }
 
-    _title = [dictionary[@"title"] copy];
-    _retrievedAt = [NSDate date];
-    _body = [dictionary[@"body"] copy];
-    _reporterLogin = [dictionary[@"user"][@"login"] copy];
-    _assignee = [[GHUser alloc] initWithDictionary:dictionary[@"assignee"]];
-
-    _updatedAt = [self.class.dateFormatter dateFromString:dictionary[@"updated_at"]];
-
-    return self;
+    func chatDismissed() {
+        LiveChat.chatViewController!.dismiss(animated: true) {
+            print("Presentation dismissed")
+        }
+    }
 }
-
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [self init];
-    if (self == nil) return nil;
-
-    _URL = [coder decodeObjectForKey:@"URL"];
-    _HTMLURL = [coder decodeObjectForKey:@"HTMLURL"];
-    _number = [coder decodeObjectForKey:@"number"];
-    _state = [coder decodeUnsignedIntegerForKey:@"state"];
-    _title = [coder decodeObjectForKey:@"title"];
-    _retrievedAt = [NSDate date];
-    _body = [coder decodeObjectForKey:@"body"];
-    _reporterLogin = [coder decodeObjectForKey:@"reporterLogin"];
-    _assignee = [coder decodeObjectForKey:@"assignee"];
-    _updatedAt = [coder decodeObjectForKey:@"updatedAt"];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    if (self.URL != nil) [coder encodeObject:self.URL forKey:@"URL"];
-    if (self.HTMLURL != nil) [coder encodeObject:self.HTMLURL forKey:@"HTMLURL"];
-    if (self.number != nil) [coder encodeObject:self.number forKey:@"number"];
-    if (self.title != nil) [coder encodeObject:self.title forKey:@"title"];
-    if (self.body != nil) [coder encodeObject:self.body forKey:@"body"];
-    if (self.reporterLogin != nil) [coder encodeObject:self.reporterLogin forKey:@"reporterLogin"];
-    if (self.assignee != nil) [coder encodeObject:self.assignee forKey:@"assignee"];
-    if (self.updatedAt != nil) [coder encodeObject:self.updatedAt forKey:@"updatedAt"];
-
-    [coder encodeUnsignedInteger:self.state forKey:@"state"];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    GHIssue *issue = [[self.class allocWithZone:zone] init];
-    issue->_URL = self.URL;
-    issue->_HTMLURL = self.HTMLURL;
-    issue->_number = self.number;
-    issue->_state = self.state;
-    issue->_reporterLogin = self.reporterLogin;
-    issue->_assignee = self.assignee;
-    issue->_updatedAt = self.updatedAt;
-
-    issue.title = self.title;
-    issue->_retrievedAt = [NSDate date];
-    issue.body = self.body;
-
-    return issue;
-}
-
-- (NSUInteger)hash {
-    return self.number.hash;
-}
-
-- (BOOL)isEqual:(GHIssue *)issue {
-    if (![issue isKindOfClass:GHIssue.class]) return NO;
-
-    return [self.number isEqual:issue.number] && [self.title isEqual:issue.title] && [self.body isEqual:issue.body];
-}
-
-@end
 ```
 
-Whew, that's a lot of boilerplate for something so simple! And, even then, there
-are some problems that this example doesn't address:
+### Using UIWindowSceneDelegate
+If your app is using UIWindowScene API you need to perform additional configuration steps in you window scene delegate class.
 
- * There's no way to update a `GHIssue` with new data from the server.
- * There's no way to turn a `GHIssue` _back_ into JSON.
- * `GHIssueState` shouldn't be encoded as-is. If the enum changes in the future,
-   existing archives might break.
- * If the interface of `GHIssue` changes down the road, existing archives might
-   break.
+```swift
 
-## Why Not Use Core Data?
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
 
-Core Data solves certain problems very well. If you need to execute complex
-queries across your data, handle a huge object graph with lots of relationships,
-or support undo and redo, Core Data is an excellent fit.
-
-It does, however, come with a couple of pain points:
-
- * **There's still a lot of boilerplate.** Managed objects reduce some of the
-   boilerplate seen above, but Core Data has plenty of its own. Correctly
-   setting up a Core Data stack (with a persistent store and persistent store
-   coordinator) and executing fetches can take many lines of code.
- * **It's hard to get right.** Even experienced developers can make mistakes
-   when using Core Data, and the framework is not forgiving.
-
-If you're just trying to access some JSON objects, Core Data can be a lot of
-work for little gain.
-
-Nonetheless, if you're using or want to use Core Data in your app already,
-Mantle can still be a convenient translation layer between the API and your
-managed model objects.
-
-## MTLModel
-
-Enter
-**[MTLModel](https://github.com/github/Mantle/blob/master/Mantle/MTLModel.h)**.
-This is what `GHIssue` looks like inheriting from `MTLModel`:
-
-```objc
-typedef enum : NSUInteger {
-    GHIssueStateOpen,
-    GHIssueStateClosed
-} GHIssueState;
-
-@interface GHIssue : MTLModel <MTLJSONSerializing>
-
-@property (nonatomic, copy, readonly) NSURL *URL;
-@property (nonatomic, copy, readonly) NSURL *HTMLURL;
-@property (nonatomic, copy, readonly) NSNumber *number;
-@property (nonatomic, assign, readonly) GHIssueState state;
-@property (nonatomic, copy, readonly) NSString *reporterLogin;
-@property (nonatomic, strong, readonly) GHUser *assignee;
-@property (nonatomic, copy, readonly) NSDate *updatedAt;
-
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *body;
-
-@property (nonatomic, copy, readonly) NSDate *retrievedAt;
-
-@end
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        LiveChat.windowScene = (scene as? UIWindowScene)
+    }
+}
 ```
 
-```objc
-@implementation GHIssue
+### Setting Custom Variables
 
-+ (NSDateFormatter *)dateFormatter {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-    return dateFormatter;
+You can provide customer name or email if they are known, so a customer will not need to fill out the pre-chat survey:
+
+```swift
+LiveChat.name = "iOS Widget Example"
+LiveChat.email = "example@livechatinc.com"
+```
+
+If you want to associate some additional info with your customer, you can set up Custom Variables:
+
+```swift
+LiveChat.setVariable(withKey:"Variable name", value:"Some value")
+```
+
+### Assign chat to specific group
+
+You can route your customers to specific group of agents by providing groupId. More information can be found here: https://www.livechatinc.com/kb/dividing-live-chat-by-group/.
+
+```swift
+LiveChat.groupId = "77"
+```
+
+### Notifying the user about the agent's response
+
+You can notifiy your user about agent response if chat was minimized by the user. To handle the incoming messages, your class must implement `LiveChatDelegate` protocol and set itself as `LiveChat.delegate`.
+
+```swift
+class YOUR_CLASS_NAME : LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+		LiveChat.licenseId = "YOUR_LICENSE_ID"
+		LiveChat.delegate = self // Set self as delegate
+
+		return true
+	}
+
+	func received(message: LiveChatMessage) {
+		print("Received message: \(message.text)")
+		// Handle message here
+	}
 }
+```
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return @{
-        @"URL": @"url",
-        @"HTMLURL": @"html_url",
-        @"number": @"number",
-        @"state": @"state",
-        @"reporterLogin": @"user.login",
-        @"assignee": @"assignee",
-        @"updatedAt": @"updated_at"
+Sample message structure.
+
+```swift
+{
+    author = {
+        name = "Support Bot";
     };
+    id = "QZ0X4O6PAV_3";
+    messageType = newMessage;
+    text = "I'm a HelpDesk Bot, here to assist you with any HelpDesk questions!";
+    timestamp = 1632478822776;
 }
-
-+ (NSValueTransformer *)URLJSONTransformer {
-    return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
-}
-
-+ (NSValueTransformer *)HTMLURLJSONTransformer {
-    return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
-}
-
-+ (NSValueTransformer *)stateJSONTransformer {
-    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
-        @"open": @(GHIssueStateOpen),
-        @"closed": @(GHIssueStateClosed)
-    }];
-}
-
-+ (NSValueTransformer *)assigneeJSONTransformer {
-    return [MTLJSONAdapter dictionaryTransformerWithModelClass:GHUser.class];
-}
-
-+ (NSValueTransformer *)updatedAtJSONTransformer {
-    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success, NSError *__autoreleasing *error) {
-        return [self.dateFormatter dateFromString:dateString];
-    } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
-        return [self.dateFormatter stringFromDate:date];
-    }];
-}
-
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue error:(NSError **)error {
-    self = [super initWithDictionary:dictionaryValue error:error];
-    if (self == nil) return nil;
-
-    // Store a value that needs to be determined locally upon initialization.
-    _retrievedAt = [NSDate date];
-
-    return self;
-}
-
-@end
 ```
 
-Notably absent from this version are implementations of `<NSCoding>`,
-`<NSCopying>`, `-isEqual:`, and `-hash`. By inspecting the `@property`
-declarations you have in your subclass, `MTLModel` can provide default
-implementations for all these methods.
+### Handling chat window resence events
 
-The problems with the original example all happen to be fixed as well:
+On the SDK level it's also possible to handle chat window presence events. To do so, your class must implement `LiveChatDelegate` protocol and set itself as `LiveChat.delegate`.
 
-> There's no way to update a `GHIssue` with new data from the server.
+```swift
+class YOUR_CLASS_NAME : LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        LiveChat.licenseId = "YOUR_LICENSE_ID"
+        LiveChat.delegate = self // Set self as delegate
 
-`MTLModel` has an extensible `-mergeValuesForKeysFromModel:` method, which makes
-it easy to specify how new model data should be integrated.
-
-> There's no way to turn a `GHIssue` _back_ into JSON.
-
-This is where reversible transformers really come in handy. `+[MTLJSONAdapter
-JSONDictionaryFromModel:error:]` can transform any model object conforming to
-`<MTLJSONSerializing>` back into a JSON dictionary. `+[MTLJSONAdapter
-JSONArrayFromModels:error:]` is the same but turns an array of model objects into an JSON array of dictionaries.
-
-> If the interface of `GHIssue` changes down the road, existing archives might break.
-
-`MTLModel` automatically saves the version of the model object that was used for
-archival. When unarchiving, `-decodeValueForKey:withCoder:modelVersion:` will
-be invoked if overridden, giving you a convenient hook to upgrade old data.
-
-## MTLJSONSerializing
-
-In order to serialize your model objects from or into JSON, you need to
-implement `<MTLJSONSerializing>` in your `MTLModel` subclass. This allows you to
-use `MTLJSONAdapter` to convert your model objects from JSON and back:
-
-```objc
-NSError *error = nil;
-XYUser *user = [MTLJSONAdapter modelOfClass:XYUser.class fromJSONDictionary:JSONDictionary error:&error];
-```
-
-```objc
-NSError *error = nil;
-NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:user error:&error];
-```
-
-### `+JSONKeyPathsByPropertyKey`
-
-The dictionary returned by this method specifies how your model object's
-properties map to the keys in the JSON representation, for example:
-
-```objc
-
-@interface XYUser : MTLModel
-
-@property (readonly, nonatomic, copy) NSString *name;
-@property (readonly, nonatomic, strong) NSDate *createdAt;
-
-@property (readonly, nonatomic, assign, getter = isMeUser) BOOL meUser;
-@property (readonly, nonatomic, strong) XYHelper *helper;
-
-@end
-
-@implementation XYUser
-
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return @{
-        @"name": @"name",
-        @"createdAt": @"created_at"
-    };
-}
-
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue error:(NSError **)error {
-    self = [super initWithDictionary:dictionaryValue error:error];
-    if (self == nil) return nil;
-
-    _helper = [XYHelper helperWithName:self.name createdAt:self.createdAt];
-
-    return self;
-}
-
-@end
-```
-
-In this example, the `XYUser` class declares four properties that Mantle
-handles in different ways:
-
-- `name` is mapped to a key of the same name in the JSON representation.
-- `createdAt` is converted to its snake case equivalent.
-- `meUser` is not serialized into JSON.
-- `helper` is initialized exactly once after JSON deserialization.
-
-Use `-[NSDictionary mtl_dictionaryByAddingEntriesFromDictionary:]` if your
-model's superclass also implements `MTLJSONSerializing` to merge their mappings.
-
-If you'd like to map all properties of a Model class to themselves, you can use
-the `+[NSDictionary mtl_identityPropertyMapWithModel:]` helper method.
-
-When deserializing JSON using
-`+[MTLJSONAdapter modelOfClass:fromJSONDictionary:error:]`, JSON keys that don't
-correspond to a property name or have an explicit mapping are ignored:
-
-```objc
-NSDictionary *JSONDictionary = @{
-    @"name": @"john",
-    @"created_at": @"2013/07/02 16:40:00 +0000",
-    @"plan": @"lite"
-};
-
-XYUser *user = [MTLJSONAdapter modelOfClass:XYUser.class fromJSONDictionary:JSONDictionary error:&error];
-```
-
-Here, the `plan` would be ignored since it neither matches a property name of
-`XYUser` nor is it otherwise mapped in `+JSONKeyPathsByPropertyKey`.
-
-### `+JSONTransformerForKey:`
-
-Implement this optional method to convert a property from a different type when
-deserializing from JSON.
-
-```
-+ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key {
-    if ([key isEqualToString:@"createdAt"]) {
-        return [NSValueTransformer valueTransformerForName:XYDateValueTransformerName];
+        return true
     }
-
-    return nil;
-}
-```
-
-`key` is the key that applies to your model object; not the original JSON key. Keep this in mind if you transform the key names using `+JSONKeyPathsByPropertyKey`.
-
-For added convenience, if you implement `+<key>JSONTransformer`,
-`MTLJSONAdapter` will use the result of that method instead. For example, dates
-that are commonly represented as strings in JSON can be transformed to `NSDate`s
-like so:
-
-```objc
-    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success, NSError *__autoreleasing *error) {
-        return [self.dateFormatter dateFromString:dateString];
-    } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
-        return [self.dateFormatter stringFromDate:date];
-    }];
-}
-```
-
-If the transformer is reversible, it will also be used when serializing the
-object into JSON.
-
-### `+classForParsingJSONDictionary:`
-
-If you are implementing a class cluster, implement this optional method to
-determine which subclass of your base class should be used when deserializing an
-object from JSON.
-
-```objc
-@interface XYMessage : MTLModel
-
-@end
-
-@interface XYTextMessage: XYMessage
-
-@property (readonly, nonatomic, copy) NSString *body;
-
-@end
-
-@interface XYPictureMessage : XYMessage
-
-@property (readonly, nonatomic, strong) NSURL *imageURL;
-
-@end
-
-@implementation XYMessage
-
-+ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
-    if (JSONDictionary[@"image_url"] != nil) {
-        return XYPictureMessage.class;
+    
+    func chatPresented() {
+        print("Chat presented")
+        // Handle event here
     }
-
-    if (JSONDictionary[@"body"] != nil) {
-        return XYTextMessage.class;
-    }
-
-    NSAssert(NO, @"No matching class for the JSON dictionary '%@'.", JSONDictionary);
-    return self;
+    
+    func chatDismissed() {
+        print("Chat dismissed")
+        // Handle event here
+    }    
 }
-
-@end
 ```
 
-`MTLJSONAdapter` will then pick the class based on the JSON dictionary you pass
-in:
+### Handling URL
 
-```objc
-NSDictionary *textMessage = @{
-    @"id": @1,
-    @"body": @"Hello World!"
-};
+By default, all links in chat messages are opened in Safari browser. To change this behavior you can use the `LiveChatDelegate` to handle URL's yourself.
 
-NSDictionary *pictureMessage = @{
-    @"id": @2,
-    @"image_url": @"http://example.com/lolcat.gif"
-};
-
-XYTextMessage *messageA = [MTLJSONAdapter modelOfClass:XYMessage.class fromJSONDictionary:textMessage error:NULL];
-
-XYPictureMessage *messageB = [MTLJSONAdapter modelOfClass:XYMessage.class fromJSONDictionary:pictureMessage error:NULL];
+```swift
+func handle(URL: URL) {
+	print("URL is \(URL.absoluteString)")
+	// Handle URL here
+}
 ```
 
-## Persistence
+### Handling chat window errors
 
-Mantle doesn't automatically persist your objects for you. However, `MTLModel`
-does conform to `<NSCoding>`, so model objects can be archived to disk using
-`NSKeyedArchiver`.
+SDK will use this method to report unhandled widget errors. 
 
-If you need something more powerful, or want to avoid keeping your whole model
-in memory at once, Core Data may be a better choice.
-
-## System Requirements
-
-Mantle supports the following platform deployment targets:
-
-* macOS 10.10+
-* iOS 8.0+
-* tvOS 9.0+
-* watchOS 2.0+
-
-## Importing Mantle
-
-### Manually
-
-To add Mantle to your application:
-
- 1. Add the Mantle repository as a submodule of your application's repository.
- 1. Run `git submodule update --init --recursive` from within the Mantle folder.
- 1. Drag and drop `Mantle.xcodeproj` into your application's Xcode project.
- 1. On the "General" tab of your application target, add `Mantle.framework` to the "Embedded Binaries".
-
-If you’re instead developing Mantle on its own, use the `Mantle.xcworkspace` file.
-
-### [Carthage](https://github.com/Carthage/Carthage)
-
-Simply add Mantle to your `Cartfile`:
-
-```
-github "Mantle/Mantle"
+```swift
+func loadingDidFail(with errror: Error) {
+    print("Chat loading failure \(errror)")
+    // Handle error here
+}
 ```
 
-### [CocoaPods](https://cocoapods.org/pods/Mantle)
+### Sending files from device library
 
-Add Mantle to your `Podfile` under the build target they want it used in:
+If you have file sharing enabled for the visitors, you should provide usage description by including `NSPhotoLibraryUsageDescription` (`Privacy - Photo Library Usage Description`), `NSCameraUsageDescription` (`Privacy - Camera Usage Description`) and `NSMicrophoneUsageDescription` (`Privacy - Microphone Usage Description`) keys in your `Info.plist` file to avoid crash on iOS 10 or higher. You can check `Info.plist` files in example projects.
 
-```
-target 'MyAppOrFramework' do
-  pod 'Mantle'
-end
-```
+## Third party integrations
 
-Then run a `pod install` within Terminal or the [CocoaPods app](https://cocoapods.org/app).
+### Snap Call
 
-### [Swift Package Manager](https://swift.org/package-manager)
+LiveChat SDK offers built in Snap Call (https://snapcall.io) integration. To benefit from that feature you have to prepare you application for requesting a mic permission from the user.
+That can be done by adding `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` keys to the `Info.plist` file. 
 
-If you are writing an application, add Mantle to your project dependencies [directly within Xcode](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app).
+## Sample Apps
 
-If you are writing a package that requires Mantle as dependency, add it to the `dependencies` list in its `Package.swift` manifest, for example:
+Sample apps for both Swift and Objective-C can be found in the `Examples` folder.
 
-```
-dependencies: [
-    .package(url: "https://github.com/Mantle/Mantle.git", .upToNextMajor(from: "2.0.0"))
-]
-```
+## Getting help
+
+If you have any questions or want to provide feedback, [chat with us!](https://secure-lc.livechatinc.com/licence/1520/v2/open_chat.cgi?groups=51)
 
 ## License
 
-Mantle is released under the MIT license. See
-[LICENSE.md](https://github.com/github/Mantle/blob/master/LICENSE.md).
-
-## More Info
-
-Have a question? Please [open an issue](https://github.com/Mantle/Mantle/issues/new)!
+iOS chat widget is available under the MIT license. See the LICENSE file for more info.
