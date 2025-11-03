@@ -1,231 +1,174 @@
-# iOS chat widget for LiveChat
+[![CocoaPods](https://img.shields.io/cocoapods/p/libPhoneNumber-iOS.svg?style=flat)](http://cocoapods.org/?q=libPhoneNumber-iOS)
+[![CocoaPods](https://img.shields.io/cocoapods/v/libPhoneNumber-iOS.svg?style=flat)](http://cocoapods.org/?q=libPhoneNumber-iOS)
+[![Travis](https://travis-ci.org/iziz/libPhoneNumber-iOS.svg?branch=master)](https://travis-ci.org/iziz/libPhoneNumber-iOS)
+[![Coveralls](https://coveralls.io/repos/iziz/libPhoneNumber-iOS/badge.svg?branch=master&service=github)](https://coveralls.io/github/iziz/libPhoneNumber-iOS?branch=master)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-iOS chat widget for LiveChat allows you to integrate [LiveChat](https://livechatinc.com) with your iOS app.
+# **libPhoneNumber for iOS**
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](#carthage)
-[![Version](https://img.shields.io/cocoapods/v/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
-[![License](https://img.shields.io/cocoapods/l/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
-[![Platform](https://img.shields.io/cocoapods/p/LiveChat.svg?style=flat)](http://cocoapods.org/pods/LiveChat)
+ - NBPhoneNumberUtil
+ - NBAsYouTypeFormatter
+ - NBTextField.swift (Swift 3)
 
-## Requirements
+> ARC only, or add the **"-fobjc-arc"** flag for non-ARC
 
-- iOS 11.0+
-- Xcode 10.0+
+## Update Log
+[https://github.com/iziz/libPhoneNumber-iOS/wiki/Update-Log](https://github.com/iziz/libPhoneNumber-iOS/wiki/Update-Log)
 
-## Installation
 
-### Carthage
+## Issue
+You can check phone number validation using below link.
+https://rawgit.com/googlei18n/libphonenumber/master/javascript/i18n/phonenumbers/demo-compiled.html
 
-If you use [Carthage](https://github.com/Carthage/Carthage) to manage your dependencies, simply add 'livechat/chat-window-ios' to your `Cartfile`.
+Please report, if the above results are different from this iOS library.
+Otherwise, please create issue to following link below to request additional telephone numbers formatting rule.
+https://github.com/googlei18n/libphonenumber/issues
 
+Metadata in this library was generated from that. so, you should change it first. :)
+
+## Install 
+
+#### Using [CocoaPods](http://cocoapods.org/?q=libPhoneNumber-iOS)
 ```
-github "livechat/chat-window-ios" ~> 2.0.24
+source 'https://github.com/CocoaPods/Specs.git'
+pod 'libPhoneNumber-iOS', '~> 0.8'
 ```
 
-Make sure you have added `LiveChat.framework` to the "_Linked Frameworks and Libraries_" section of your target, and have include it in your Carthage framework copying build phase.
+#### Using [Carthage](https://github.com/Carthage/Carthage)
 
-### CocoaPods
+ Carthage is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
 
-If you use [CocoaPods](http://cocoapods.org) to manage your dependencies, simply add LiveChat to your `Podfile`.
+ You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
 ```bash
-pod 'LiveChat', '~> 2.0.24'
+$ brew update
+$ brew install carthage
 ```
 
-### Manual Installation
+To integrate libPhoneNumber into your Xcode project using Carthage, specify it in your `Cartfile`:
 
-You can integrate iOS chat widget into your project manually without using a dependency manager.
-
-#### Swift
-
-Just drag all files from the `LiveChat/Sources` directory into your project.
-
-#### Objective-C
-
-Drag all files from the `LiveChat/Sources` directory into your project. When adding first `*.swift` file to Objective-C project, Xcode will ask you to create a Bridging Header. It is not necessary for chat widget to work, so you can decline unless you plan to call Swift code from Objective-C. More information about bridging headers and Swift and Objective-C interoperability can be found [here](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html). You need to put the following import statement: `#import "<Your Project Name>-Swift.h"` at the top of your .m file.
-
-Also, for Objective-C projects, you need to set the **Embedded Content Contains Swift Code** flag in your project to `Yes` (found under **Build Options** in the **Build Settings** tab).
-
-## Usage
-
-### Initalization
-
-```swift
-import LiveChat
-
-LiveChat.licenseId = "YOUR_LICENSE_ID"
+```ogdl
+github "iziz/libPhoneNumber-iOS"
 ```
 
-### Default Chat Widget presentation
+And set the **Embedded Content Contains Swift** to "Yes" in your build settings.
 
-```swift
-LiveChat.presentChat()
+#### Setting up manually
+ Add source files to your projects from libPhoneNumber
+    - Add "CoreTelephony.framework"
+
+See sample test code from
+> [libPhoneNumber-iOS/libPhoneNumberTests/ ... Test.m] (https://github.com/iziz/libPhoneNumber-iOS/tree/master/libPhoneNumberTests)
+
+## Usage - **NBPhoneNumberUtil**
+```obj-c
+ NBPhoneNumberUtil *phoneUtil = [[NBPhoneNumberUtil alloc] init];
+ NSError *anError = nil;
+ NBPhoneNumber *myNumber = [phoneUtil parse:@"6766077303"
+                              defaultRegion:@"AT" error:&anError];
+ if (anError == nil) {
+     NSLog(@"isValidPhoneNumber ? [%@]", [phoneUtil isValidNumber:myNumber] ? @"YES":@"NO");
+
+     // E164          : +436766077303
+     NSLog(@"E164          : %@", [phoneUtil format:myNumber
+                                       numberFormat:NBEPhoneNumberFormatE164
+                                              error:&anError]);
+     // INTERNATIONAL : +43 676 6077303
+     NSLog(@"INTERNATIONAL : %@", [phoneUtil format:myNumber
+                                       numberFormat:NBEPhoneNumberFormatINTERNATIONAL
+                                              error:&anError]);
+     // NATIONAL      : 0676 6077303
+     NSLog(@"NATIONAL      : %@", [phoneUtil format:myNumber
+                                       numberFormat:NBEPhoneNumberFormatNATIONAL
+                                              error:&anError]);
+     // RFC3966       : tel:+43-676-6077303
+     NSLog(@"RFC3966       : %@", [phoneUtil format:myNumber
+                                       numberFormat:NBEPhoneNumberFormatRFC3966
+                                              error:&anError]);
+ } else {
+     NSLog(@"Error : %@", [anError localizedDescription]);
+ }
+
+ NSLog (@"extractCountryCode [%@]", [phoneUtil extractCountryCode:@"823213123123" nationalNumber:nil]);
+
+ NSString *nationalNumber = nil;
+ NSNumber *countryCode = [phoneUtil extractCountryCode:@"823213123123" nationalNumber:&nationalNumber];
+
+ NSLog (@"extractCountryCode [%@] [%@]", countryCode, nationalNumber);
+```
+##### Output
+```
+2014-07-06 12:39:37.240 libPhoneNumberTest[1581:60b] isValidPhoneNumber ? [YES]
+2014-07-06 12:39:37.242 libPhoneNumberTest[1581:60b] E164          : +436766077303
+2014-07-06 12:39:37.243 libPhoneNumberTest[1581:60b] INTERNATIONAL : +43 676 6077303
+2014-07-06 12:39:37.243 libPhoneNumberTest[1581:60b] NATIONAL      : 0676 6077303
+2014-07-06 12:39:37.244 libPhoneNumberTest[1581:60b] RFC3966       : tel:+43-676-6077303
+2014-07-06 12:39:37.244 libPhoneNumberTest[1581:60b] extractCountryCode [82]
+2014-07-06 12:39:37.245 libPhoneNumberTest[1581:60b] extractCountryCode [82] [3213123123]
 ```
 
-### Presenting Chat Widget within client app view hierarchy
+#### with Swift
+##### Case (1) with Framework
+```
+import libPhoneNumberiOS
+```
 
-You can also take over the a responsibility for widget presentation within you app. To do so you have to set the `customPresentationStyleEnabled` flag to `true`.
-This flag will disable the default widget's presentation behavior and leave that logic up to you. You can now access the `chatViewController` property and define your own presentation style.
+##### Case (2) with Bridging-Header
+```obj-c
+// Manually added
+#import "NBPhoneNumberUtil.h"
+#import "NBPhoneNumber.h"
 
-When `customPresentationStyleEnabled` is set to `false` then `chatViewController` has a value of `nil`.
+// CocoaPods (check your library path)
+#import "libPhoneNumber_iOS/NBPhoneNumberUtil.h"
+#import "libPhoneNumber_iOS/NBPhoneNumber.h"
 
+// add more if you want...
+```
+
+##### Case (3) with CocoaPods
+import libPhoneNumber_iOS
+
+
+##### - in swift class file
+###### 2.x
 ```swift
-class YOUR_CLASS_NAME : UIViewControler, LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
+override func viewDidLoad() {
+    super.viewDidLoad()
 
-    @IBAction func openChat(_ sender: Any) {  
-        LiveChat.delegate = self
-        LiveChat.customPresentationStyleEnabled = true
+    let phoneUtil = NBPhoneNumberUtil()
 
-        present(LiveChat.chatViewController!, animated: true) {
-            print("Presentation completed")
-        }
+    do {
+        let phoneNumber: NBPhoneNumber = try phoneUtil.parse("01065431234", defaultRegion: "KR")
+        let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .E164)
+
+        NSLog("[%@]", formattedString)
     }
-
-    func chatDismissed() {
-        LiveChat.chatViewController!.dismiss(animated: true) {
-            print("Presentation dismissed")
-        }
+    catch let error as NSError {
+        print(error.localizedDescription)
     }
 }
 ```
 
-### Using UIWindowSceneDelegate
-If your app is using UIWindowScene API you need to perform additional configuration steps in you window scene delegate class.
+## Usage - **NBAsYouTypeFormatter**
+```obj-c
+    NBAsYouTypeFormatter *f = [[NBAsYouTypeFormatter alloc] initWithRegionCode:@"US"];
+    NSLog(@"%@", [f inputDigit:@"6"]); // "6"
+    NSLog(@"%@", [f inputDigit:@"5"]); // "65"
+    NSLog(@"%@", [f inputDigit:@"0"]); // "650"
+    NSLog(@"%@", [f inputDigit:@"2"]); // "650 2"
+    NSLog(@"%@", [f inputDigit:@"5"]); // "650 25"
+    NSLog(@"%@", [f inputDigit:@"3"]); // "650 253"
 
-```swift
+    // Note this is how a US local number (without area code) should be formatted.
+    NSLog(@"%@", [f inputDigit:@"2"]); // "650 2532"
+    NSLog(@"%@", [f inputDigit:@"2"]); // "650 253 22"
+    NSLog(@"%@", [f inputDigit:@"2"]); // "650 253 222"
+    NSLog(@"%@", [f inputDigit:@"2"]); // "650 253 2222"
+    // Can remove last digit
+    NSLog(@"%@", [f removeLastDigit]); // "650 253 222"
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        LiveChat.windowScene = (scene as? UIWindowScene)
-    }
-}
+    NSLog(@"%@", [f inputString:@"16502532222"]); // 1 650 253 2222
 ```
 
-### Setting Custom Variables
-
-You can provide customer name or email if they are known, so a customer will not need to fill out the pre-chat survey:
-
-```swift
-LiveChat.name = "iOS Widget Example"
-LiveChat.email = "example@livechatinc.com"
-```
-
-If you want to associate some additional info with your customer, you can set up Custom Variables:
-
-```swift
-LiveChat.setVariable(withKey:"Variable name", value:"Some value")
-```
-
-### Assign chat to specific group
-
-You can route your customers to specific group of agents by providing groupId. More information can be found here: https://www.livechatinc.com/kb/dividing-live-chat-by-group/.
-
-```swift
-LiveChat.groupId = "77"
-```
-
-### Notifying the user about the agent's response
-
-You can notifiy your user about agent response if chat was minimized by the user. To handle the incoming messages, your class must implement `LiveChatDelegate` protocol and set itself as `LiveChat.delegate`.
-
-```swift
-class YOUR_CLASS_NAME : LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		LiveChat.licenseId = "YOUR_LICENSE_ID"
-		LiveChat.delegate = self // Set self as delegate
-
-		return true
-	}
-
-	func received(message: LiveChatMessage) {
-		print("Received message: \(message.text)")
-		// Handle message here
-	}
-}
-```
-
-Sample message structure.
-
-```swift
-{
-    author = {
-        name = "Support Bot";
-    };
-    id = "QZ0X4O6PAV_3";
-    messageType = newMessage;
-    text = "I'm a HelpDesk Bot, here to assist you with any HelpDesk questions!";
-    timestamp = 1632478822776;
-}
-```
-
-### Handling chat window resence events
-
-On the SDK level it's also possible to handle chat window presence events. To do so, your class must implement `LiveChatDelegate` protocol and set itself as `LiveChat.delegate`.
-
-```swift
-class YOUR_CLASS_NAME : LiveChatDelegate { // Your class need to implement LiveChatDelegate protocol
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        LiveChat.licenseId = "YOUR_LICENSE_ID"
-        LiveChat.delegate = self // Set self as delegate
-
-        return true
-    }
-    
-    func chatPresented() {
-        print("Chat presented")
-        // Handle event here
-    }
-    
-    func chatDismissed() {
-        print("Chat dismissed")
-        // Handle event here
-    }    
-}
-```
-
-### Handling URL
-
-By default, all links in chat messages are opened in Safari browser. To change this behavior you can use the `LiveChatDelegate` to handle URL's yourself.
-
-```swift
-func handle(URL: URL) {
-	print("URL is \(URL.absoluteString)")
-	// Handle URL here
-}
-```
-
-### Handling chat window errors
-
-SDK will use this method to report unhandled widget errors. 
-
-```swift
-func loadingDidFail(with errror: Error) {
-    print("Chat loading failure \(errror)")
-    // Handle error here
-}
-```
-
-### Sending files from device library
-
-If you have file sharing enabled for the visitors, you should provide usage description by including `NSPhotoLibraryUsageDescription` (`Privacy - Photo Library Usage Description`), `NSCameraUsageDescription` (`Privacy - Camera Usage Description`) and `NSMicrophoneUsageDescription` (`Privacy - Microphone Usage Description`) keys in your `Info.plist` file to avoid crash on iOS 10 or higher. You can check `Info.plist` files in example projects.
-
-## Third party integrations
-
-### Snap Call
-
-LiveChat SDK offers built in Snap Call (https://snapcall.io) integration. To benefit from that feature you have to prepare you application for requesting a mic permission from the user.
-That can be done by adding `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` keys to the `Info.plist` file. 
-
-## Sample Apps
-
-Sample apps for both Swift and Objective-C can be found in the `Examples` folder.
-
-## Getting help
-
-If you have any questions or want to provide feedback, [chat with us!](https://secure-lc.livechatinc.com/licence/1520/v2/open_chat.cgi?groups=51)
-
-## License
-
-iOS chat widget is available under the MIT license. See the LICENSE file for more info.
+##### Visit [libphonenumber](https://github.com/googlei18n/libphonenumber) for more information or mail (zen.isis@gmail.com)
