@@ -1,5 +1,7 @@
-framework module GoogleMapsCore {
+framework module GoogleMaps {
+  umbrella header "GoogleMaps.h"
   export *
+  module * { export * }
   link "z"
   link framework "CoreData"
   link framework "CoreFoundation"
